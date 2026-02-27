@@ -87,6 +87,9 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   )}
 
+  <!-- RSS Feed -->
+  <link rel="alternate" type="application/rss+xml" title="Jan Medina — Blog" href="/rss.xml" />
+
   <!-- Theme Color -->
   <meta name="theme-color" content="#fdf6e3" />
 </head>
@@ -103,6 +106,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
         <div class="flex items-center gap-1 sm:gap-2">
           <a href="/about" class="px-3 py-2 text-sm font-semibold hover:bg-black hover:text-cream transition-colors">About</a>
           <a href="/projects" class="px-3 py-2 text-sm font-semibold hover:bg-black hover:text-cream transition-colors">Projects</a>
+          <a href="/blog" class="px-3 py-2 text-sm font-semibold hover:bg-black hover:text-cream transition-colors">Blog</a>
           <a href="/contact" class="px-3 py-2 text-sm font-semibold hover:bg-black hover:text-cream transition-colors">Contact</a>
           <a
             href="/os"
