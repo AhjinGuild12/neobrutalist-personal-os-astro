@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Jan Medina",
+  "description": "Learn about Jan Medina — IT Professional and developer based in Auckland, NZ.",
+  "url": "https://janbmedina.com/about",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Jan Medina",
+    "jobTitle": "IT Professional & Developer",
+    "address": { "@type": "PostalAddress", "addressLocality": "Auckland", "addressCountry": "NZ" }
+  }
+};
+
+const skills = [
+  { category: "IT & Infrastructure", items: ["JAMF Pro", "Microsoft Intune", "Active Directory", "Azure AD", "MDM Policies", "Device Fleet Management"] },
+  { category: "Scripting & Automation", items: ["PowerShell", "Shell Scripting", "Workflow Automation", "MDM Policy Deployment"] },
+  { category: "Development", items: ["React", "TypeScript", "JavaScript", "Node.js", "Swift", "Astro"] },
+  { category: "Platforms", items: ["macOS", "Windows", "Linux", "iOS"] },
+  { category: "Tools", items: ["Git", "Xcode", "VS Code", "SharePoint", "Microsoft 365 Admin"] },
+];
+---
+
+<BaseLayout
+  title="About Jan Medina — IT Professional & Developer"
+  description="Learn about Jan Medina's background in IT administration, development skills, and approach to building software. Based in Auckland, NZ."
+  canonicalPath="/about"
+  jsonLd={jsonLd}
+>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="mb-8">
+      <ol class="flex items-center gap-2 text-sm text-neutral-500">
+        <li><a href="/" class="hover:underline">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="font-semibold text-black">About</li>
+      </ol>
+    </nav>
+
+    <h1 class="font-heading text-3xl sm:text-4xl font-black mb-8">About Me</h1>
+
+    <section class="space-y-6 text-neutral-700 leading-relaxed" aria-labelledby="bio-heading">
+      <h2 id="bio-heading" class="sr-only">Biography</h2>
+      <p class="text-lg">
+        I'm <strong>Jan Medina</strong>, an IT Professional based in <strong>Auckland, New Zealand</strong>.
+        By day, I manage enterprise device fleets and automate IT workflows. By night (and weekends),
+        I build iOS apps and web apps — always looking to level up with every project.
+      </p>
+      <p>
+        My full-time work revolves around keeping hundreds of devices secure, compliant, and running smoothly
+        using tools like JAMF Pro and Microsoft Intune. I write PowerShell scripts, deploy MDM policies, and
+        manage the entire lifecycle of enterprise devices.
+      </p>
+      <p>
+        On the development side, I work primarily with <strong>React</strong> and <strong>TypeScript</strong>
+        for web, and <strong>Swift</strong> for iOS. I'm a practical builder — I use AI tools as a multiplier
+        to ship ideas faster, while keeping the craft and architecture solid underneath.
+      </p>
+    </section>
+
+    <!-- Skills -->
+    <section class="mt-16" aria-labelledby="skills-heading">
+      <h2 id="skills-heading" class="font-heading text-2xl font-bold mb-8">Skills &amp; Technologies</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {skills.map((group) => (
+          <div class="neo-border bg-white p-6 shadow-neo-sm">
+            <h3 class="font-heading text-sm font-bold mb-4">{group.category}</h3>
+            <div class="flex flex-wrap gap-2">
+              {group.items.map((item) => (
+                <span class="text-xs font-semibold px-3 py-1.5 bg-cream neo-border border-2 shadow-neo-sm">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Work Philosophy -->
+    <section class="mt-16" aria-labelledby="philosophy-heading">
+      <h2 id="philosophy-heading" class="font-heading text-2xl font-bold mb-6">How I Work</h2>
+      <div class="space-y-4 text-neutral-700 leading-relaxed">
+        <p>
+          <strong>Ship fast. Learn faster.</strong> Every project is a hands-on lesson to get sharper at
+          coding, architecture, and shipping real stuff. I treat side projects as my personal training ground.
+        </p>
+        <p>
+          <strong>Simplicity first.</strong> I prefer elegant, minimal solutions over clever complexity.
+          Clean code that another human (including future me) can read and maintain.
+        </p>
+        <p>
+          <strong>AI-assisted, not AI-dependent.</strong> I use AI tools heavily to accelerate development,
+          but the architecture decisions, the debugging, and the craft — that's all human.
+        </p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
