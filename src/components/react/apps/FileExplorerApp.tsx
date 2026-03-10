@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FileItem } from '../../../types';
+import type { FileItem } from '../../../types';
 import { playClick } from '../../../utils/sounds';
 import useFileExplorerNavigation from '../../../hooks/useFileExplorerNavigation';
 

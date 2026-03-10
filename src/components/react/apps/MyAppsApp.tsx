@@ -70,6 +70,7 @@ const MyAppsApp: React.FC<MyAppsAppProps> = ({ onOpenApp }) => {
                 playClick();
                 onOpenApp(app.id);
               }}
+              data-testid={`mini-app-${app.id}`}
               className="group p-6 bg-white border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
                          hover:bg-[#fdf6e3] active:translate-x-[3px] active:translate-y-[3px]
                          active:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all duration-75"

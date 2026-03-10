@@ -1,4 +1,4 @@
-import { FileItem } from '../types';
+import type { FileItem } from '../types';
 
 export const ROOT_ID = 'my-computer-root';
 
@@ -203,7 +203,7 @@ export const getAncestorPath = (fileId: string): { id: string; name: string }[] 
   let currentId: string | undefined = fileId;
 
   while (currentId && currentId !== ROOT_ID) {
-    const file = FILE_SYSTEM[currentId];
+    const file: FileItem | undefined = FILE_SYSTEM[currentId];
     if (!file) break;
     path.unshift({ id: file.id, name: file.name });
     currentId = file.parentId;

@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from "@google/genai";
-import { Task } from '../../types';
+import type { Task } from '../../types';
 
 interface BrainViewProps {
   tasks: Task[];

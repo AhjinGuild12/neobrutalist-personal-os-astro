@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Task, Project } from '../../types';
+import type { Project, Task } from '../../types';
 import TaskList from './TaskList';
 
 interface DashboardProps {

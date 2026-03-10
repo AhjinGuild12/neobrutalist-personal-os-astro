@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { ROOT_ID, getChildren, getFileById, getAncestorPath } from '../data/fileSystem';
-import { FileItem } from '../types';
+import type { FileItem } from '../types';
 
 interface UseFileExplorerNavigationOptions {
   initialFolderId?: string;

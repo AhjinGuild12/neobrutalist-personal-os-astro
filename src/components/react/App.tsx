@@ -18,16 +18,19 @@ import WeatherApp from './apps/WeatherApp';
 import CameraApp from './apps/CameraApp';
 import TVRetroApp from './apps/TVRetroApp';
 import PortfolioPage from './PortfolioPage';
+import { ThemeProvider } from '../../context/ThemeContext';
 import { FOLDER_IDS, getChildren } from '../../data/fileSystem';
 import {
   AppId,
+} from '../../types';
+import type {
   AppConfig,
-  WindowState,
+  DesktopShortcut,
   Position,
+  Project,
   Size,
   Task,
-  Project,
-  DesktopShortcut,
+  WindowState,
 } from '../../types';
 
 // --- App registry: defines each app's config ---
@@ -181,6 +184,14 @@ const APP_CONFIGS: Record<AppId, AppConfig> = {
   },
 };
 
+const AQUA_DOCK_ITEMS: Array<{ id: string; appId: AppId; label: string }> = [
+  { id: 'projects', appId: AppId.PROJECTS, label: 'Projects' },
+  { id: 'tasks', appId: AppId.TASKS, label: 'Tasks' },
+  { id: 'app-store', appId: AppId.MY_APPS, label: 'App Store' },
+  { id: 'browser', appId: AppId.BROWSER, label: 'Browser' },
+  { id: 'games', appId: AppId.GAMES, label: 'Games' },
+];
+
 // --- Desktop shortcuts (what appears on the desktop) ---
 const DESKTOP_SHORTCUTS: DesktopShortcut[] = [];
 
@@ -202,10 +213,10 @@ const cascadePosition = (): Position => {
 
 const App: React.FC = () => {
   // Portfolio & light-switch state
-  const [isPortfolioVisible, setIsPortfolioVisible] = useState(true);
+  const [isPortfolioVisible, setIsPortfolioVisible] = useState(false);
   const [portfolioKey, setPortfolioKey] = useState(0);
   const [showFlash, setShowFlash] = useState(false);
-  const flashTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Window state
   const [windows, setWindows] = useState<WindowState[]>([]);
@@ -230,10 +241,7 @@ const App: React.FC = () => {
 
   // Shut Down: return to portfolio with typewriter reset
   const handleShutDown = useCallback(() => {
-    setIsPortfolioVisible(true);
-    setPortfolioKey((k) => k + 1);
-    setIsStartMenuOpen(false);
-    setWindows([]);
+    window.location.href = '/';
   }, []);
 
   // App data (shared across windows)
@@ -416,6 +424,20 @@ const App: React.FC = () => {
     setNextZIndex((z) => z + 1);
   }, [nextZIndex]);
 
+  const handleAquaWindowClick = useCallback((id: string) => {
+    setWindows((prev) => {
+      const win = prev.find((w) => w.id === id);
+      if (!win) return prev;
+
+      return prev.map((candidate) =>
+        candidate.id === id
+          ? { ...candidate, isMinimized: false, zIndex: nextZIndex }
+          : candidate
+      );
+    });
+    setNextZIndex((z) => z + 1);
+  }, [nextZIndex]);
+
   // Figure out which window is currently focused (highest z, not minimized)
   const focusedWindowId = windows
     .filter((w) => !w.isMinimized)
@@ -503,46 +525,50 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden relative select-none">
+    <ThemeProvider>
+    <div className="fixed inset-0 overflow-hidden select-none">
       {/* OS Layer — always rendered underneath */}
-      <div className={`absolute inset-0 os-layer${!isPortfolioVisible ? ' switched-on' : ''}`}>
-        {/* Desktop layer */}
-        <Desktop
-          shortcuts={DESKTOP_SHORTCUTS}
-          onOpenApp={openApp}
-          onClickBackground={() => setIsStartMenuOpen(false)}
-        />
-
-        {/* Window layer */}
-        <WindowManager
-          windows={windows}
-          appConfigs={APP_CONFIGS}
-          onClose={closeWindow}
-          onMinimize={minimizeWindow}
-          onMaximize={maximizeWindow}
-          onFocus={focusWindow}
-          onUpdatePosition={updateWindowPosition}
-          onUpdateSize={updateWindowSize}
-          renderApp={renderApp}
-        />
-
-        {/* Start menu (above taskbar) */}
-        {isStartMenuOpen && (
-          <StartMenu
-            appConfigs={APP_CONFIGS}
+      <div className={`absolute inset-0 flex flex-col os-layer${!isPortfolioVisible ? ' switched-on' : ''}`}>
+        {/* Desktop + Windows area (takes remaining space) */}
+        <div className="flex-1 relative min-h-0">
+          <Desktop
+            shortcuts={DESKTOP_SHORTCUTS}
             onOpenApp={openApp}
-            onClose={() => setIsStartMenuOpen(false)}
-            onShutDown={handleShutDown}
+            onClickBackground={() => setIsStartMenuOpen(false)}
           />
-        )}
 
-        {/* Taskbar */}
+          <WindowManager
+            windows={windows}
+            appConfigs={APP_CONFIGS}
+            onClose={closeWindow}
+            onMinimize={minimizeWindow}
+            onMaximize={maximizeWindow}
+            onFocus={focusWindow}
+            onUpdatePosition={updateWindowPosition}
+            onUpdateSize={updateWindowSize}
+            renderApp={renderApp}
+          />
+
+          {isStartMenuOpen && (
+            <StartMenu
+              appConfigs={APP_CONFIGS}
+              onOpenApp={openApp}
+              onClose={() => setIsStartMenuOpen(false)}
+              onShutDown={handleShutDown}
+            />
+          )}
+        </div>
+
+        {/* Taskbar — flex child, always visible at bottom */}
         <Taskbar
           windows={windows}
           appConfigs={APP_CONFIGS}
           isStartMenuOpen={isStartMenuOpen}
           onToggleStartMenu={() => setIsStartMenuOpen((prev) => !prev)}
           onWindowClick={handleTaskbarWindowClick}
+          aquaDockItems={AQUA_DOCK_ITEMS}
+          onAquaDockAppClick={(appId) => openApp(appId)}
+          onAquaWindowClick={handleAquaWindowClick}
           focusedWindowId={focusedWindowId}
         />
       </div>
@@ -557,6 +583,7 @@ const App: React.FC = () => {
         <PortfolioPage key={portfolioKey} onEnter={handleEnterOS} />
       </div>
     </div>
+    </ThemeProvider>
   );
 };
 

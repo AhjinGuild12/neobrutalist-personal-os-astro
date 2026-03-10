@@ -42,19 +42,27 @@ import App from '../components/react/App';
   </noscript>
 
   <!-- Theme Color -->
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#2456b8" />
 
   <style>
-    html, body, #root {
+    html, body {
       height: 100%;
       overflow: hidden;
       margin: 0;
       padding: 0;
     }
     body {
-      background-color: #fdf6e3;
+      background-color: #3a6ea5;
+      background-image:
+        radial-gradient(ellipse at 50% 100%, #5a9fd4 0%, #3a6ea5 40%, #245b8e 70%),
+        linear-gradient(180deg, #245b8e 0%, #3a6ea5 30%, #87ceeb 60%, #5a9fd4 100%);
       color: #000;
       cursor: default;
+    }
+    /* Astro wraps client:only components in astro-island (display:contents).
+       Ensure nothing between body and the React root adds unexpected height. */
+    astro-island {
+      display: contents;
     }
   </style>
 </head>

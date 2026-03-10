@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import useTypewriter from '../../hooks/useTypewriter';
-import portfolioData, { ProjectDetail } from '../../data/portfolioData';
+import portfolioData from '../../data/portfolioData';
+import type { ProjectDetail } from '../../data/portfolioData';
 
 interface PortfolioPageProps {
   onEnter: () => void;

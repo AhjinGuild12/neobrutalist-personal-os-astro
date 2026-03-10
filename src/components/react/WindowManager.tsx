@@ -1,6 +1,7 @@
 import React from 'react';
 import Window from './Window';
-import { WindowState, Position, Size, AppId, AppConfig } from '../../types';
+import { AppId } from '../../types';
+import type { AppConfig, Position, Size, WindowState } from '../../types';
 
 interface WindowManagerProps {
   windows: WindowState[];

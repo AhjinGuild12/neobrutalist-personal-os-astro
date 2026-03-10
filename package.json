@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "validate:themes-local": "node scripts/validate-themes-local.mjs",
     "astro": "astro"
   },
   "dependencies": {
